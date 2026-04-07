@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ boat['name'] }} - FishBoat Rentals{% endblock %}
+
+{% block body %}
+    <div class="boat-detail-container">
+        <a href="/boats" style="color: var(--primary-color); text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 20px;">← Back to All Boats</a>
+        
+        <div class="boat-detail-image">BOAT</div>
+        
+        <h1 style="margin: 20px 0;">{{ boat['name'] }}</h1>
+        
+        <div class="detail-info">
+            <h3>Boat Information</h3>
+            <p><strong>Boat ID:</strong> #{{ boat['id'] }}</p>
+            <p><strong>Type:</strong> {{ boat['type'] }}</p>
+            <p><strong>Owner ID:</strong> {{ boat['owner_id'] }}</p>
+        </div>
+
+        <div class="detail-info">
+            <h3>Rental Price</h3>
+            <p style="font-size: 2em; color: var(--accent-color); font-weight: 700;">${{ "%.2f"|format(boat['rental_price']) }}/day</p>
+        </div>
+
+        <div class="detail-actions">
+            <a href="/update/{{ boat['id'] }}" class="btn btn-edit" style="flex: 1;">Edit Boat Details</a>
+            <form method="post" action="/delete/{{ boat['id'] }}" style="flex: 1;">
+                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this boat?');" style="width: 100%;">Delete Boat</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

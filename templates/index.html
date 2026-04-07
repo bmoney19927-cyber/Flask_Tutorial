@@ -1,4 +1,44 @@
 {% extends "base.html" %}
+{% block title %}Home - FishBoat Rentals{% endblock %}
+
 {% block body %}
-    <h1> Welcome! </h1>
+    <div style="text-align: center; padding: 60px 20px;">
+        <h1 style="font-size: 3em; margin-bottom: 20px;">Welcome to FishBoat Rentals</h1>
+        <p style="font-size: 1.3em; color: var(--text-light); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Your premier destination for renting quality fishing boats. Choose from our selection of well-maintained vessels, 
+            perfect for both beginners and experienced anglers.
+        </p>
+        
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin: 40px 0;">
+            <a href="/boats" class="btn" style="background: var(--primary-color); padding: 15px 40px; font-size: 1.1em;">
+                Browse All Boats
+            </a>
+            <a href="/search" class="btn" style="background: var(--accent-color); padding: 15px 40px; font-size: 1.1em;">
+                Search Boats
+            </a>
+            <a href="/create" class="btn" style="background: #4CAF50; padding: 15px 40px; font-size: 1.1em;">
+                List Your Boat
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 60px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 3em; margin-bottom: 15px; color: var(--accent-color); font-weight: bold;">1</div>
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Quality Fleet</h3>
+                <p style="color: var(--text-light);">A carefully selected collection of well-maintained fishing boats of various sizes and types.</p>
+            </div>
+
+            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 3em; margin-bottom: 15px; color: var(--accent-color); font-weight: bold;">2</div>
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Competitive Pricing</h3>
+                <p style="color: var(--text-light);">Affordable rental rates with flexible options to suit any budget and fishing trip.</p>
+            </div>
+
+            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <div style="font-size: 3em; margin-bottom: 15px; color: var(--accent-color); font-weight: bold;">3</div>
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">Expert Support</h3>
+                <p style="color: var(--text-light);">Our knowledgeable team is here to help you find the perfect boat for your adventure.</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

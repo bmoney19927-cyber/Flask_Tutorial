@@ -1,132 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/header.css') }}">
-    <title>My site</title>
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+    <title>{% block title %}FishBoat Rentals - Hire Your Perfect Fishing Boat{% endblock %}</title>
+</head>
 
-  <body>
+<body>
     <header>
-      <div class="topBar">
-        <div class="">
-          <img src="{{url_for('static',filename = 'images/logo.jpg')}}" alt="Logo" class="logo">
-          <ul class="barItem">
+        <div class="topBar">
+            <div class="logo-section">
+                <div class="logo">FB</div>
+                <a href="/" class="brand-title">FishBoat</a>
+            </div>
 
-            <li><a href="/">HOME</a></li>
-            <li>SERVICES</li>
-            <li>ABOUT</li>
-            <li>CONTACT</li>
-          </ul>
+            <ul class="nav-links">
+                <li><a href="/">HOME</a></li>
+                <li><a href="/boats">BROWSE BOATS</a></li>
+                <li><a href="/search">SEARCH</a></li>
+                <li><a href="/create">RENT OUT</a></li>
+            </ul>
+
+            <div class="formSection">
+                <form method="post">
+                    <input type="text" name="uid" placeholder="E-mail" required>
+                    <input type="password" name="pass" placeholder="Password" required>
+                    <button type="submit" name="loginButton">LOGIN</button>
+                </form>
+                <button class="btn"><a href="#" style="text-decoration: none; color: inherit;">SIGNUP</a></button>
+            </div>
         </div>
-
-        <div class="formSection barItem">
-          <form class="barItem" action="" method="post">
-            <input type="text" name="uid" value="" placeholder="E-mail" required>
-            <input type="password" name="pass" value="" placeholder="Password" required>
-            <input type="submit" name="loginButton" value="LOGIN">
-          </form>
-
-          <button class="barItem input" style="margin-left:10px;">
-            <a href="#">SIGNUP</a>
-          </button>
-        </div>
-
-      </div>
     </header>
 
-    {% block body %}
-    {% endblock %}
-    
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
     <footer class="footer">
-      <div class="footer__addr">
-        <h1 class="footer__logo">A very cool looking footer!</h1>
-
-        <h2>Contact</h2>
-
-        <address>
-          5534 Somewhere In. The World 22193-10212<br>
-
-          <a class="footer__btn" href="mailto:example@gmail.com">Email Us</a>
-        </address>
-      </div>
-
-      <ul class="footer__nav">
-        <li class="nav__item">
-          <h2 class="nav__title">Media</h2>
-
-          <ul class="nav__ul">
-            <li>
-              <a href="#">Online</a>
-            </li>
-
-            <li>
-              <a href="#">Print</a>
-            </li>
-
-            <li>
-              <a href="#">Alternative Ads</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav__item nav__item--extra">
-          <h2 class="nav__title">Technology</h2>
-
-          <ul class="nav__ul nav__ul--extra">
-            <li>
-              <a href="#">Hardware Design</a>
-            </li>
-
-            <li>
-              <a href="#">Software Design</a>
-            </li>
-
-            <li>
-              <a href="#">Digital Signage</a>
-            </li>
-
-            <li>
-              <a href="#">Automation</a>
-            </li>
-
-            <li>
-              <a href="#">Artificial Intelligence</a>
-            </li>
-
-            <li>
-              <a href="#">IoT</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav__item">
-          <h2 class="nav__title">Legal</h2>
-
-          <ul class="nav__ul">
-            <li>
-              <a href="#">Privacy Policy</a>
-            </li>
-
-            <li>
-              <a href="#">Terms of Use</a>
-            </li>
-
-            <li>
-              <a href="#">Sitemap</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="legal">
-        <p>&copy; 2019 Something. All rights reserved.</p>
-
-        <div class="legal__links">
-          <span>Made with <span class="heart">♥</span> remotely from Anywhere</span>
+        <div class="footer__addr">
+            <h1 class="footer__logo">FishBoat Rentals</h1>
+            <h2>Contact</h2>
+            <address>
+                Shoreline Marina, Fishing District 22193<br>
+                <a class="footer__btn" href="mailto:rentals@fishboat.com">Email Us</a>
+            </address>
         </div>
-      </div>
-    </footer>
 
-  </body>
+        <ul class="footer__nav">
+            <li class="nav__item">
+                <h2 class="nav__title">Services</h2>
+                <ul class="nav__ul">
+                    <li><a href="#">Boat Rentals</a></li>
+                    <li><a href="#">Guided Tours</a></li>
+                    <li><a href="#">Equipment Rental</a></li>
+                </ul>
+            </li>
+
+            <li class="nav__item">
+                <h2 class="nav__title">Company</h2>
+                <ul class="nav__ul">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Safety</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </li>
+
+            <li class="nav__item">
+                <h2 class="nav__title">Support</h2>
+                <ul class="nav__ul">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Book Now</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <div style="text-align: center; margin-top: 20px; color: rgba(255, 255, 255, 0.7); width: 100%;">
+            <p>&copy; 2026 FishBoat Rentals. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
 </html>

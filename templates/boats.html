@@ -1,80 +1,109 @@
-<style>
-    .flex-box {
-        display: flex;
-        font-size: 16px;
-        flex-wrap: wrap;
-        width: 1140px;
-        margin: auto;
-    }
-
-    .boat {
-        min-width: 200px;
-        padding: 10px;
-    }
-
-    .pagination_bar {
-        display: flex;
-        justify-content: flex-end;
-        width: 1140px;
-        margin: auto;
-    }
-    .pagination_button {
-        font-size: 20px;
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 2px 2px 4px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        width: 30px;
-    }
-
-    .column {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        padding-top: 20px;
-        align-items: center;
-    }
-</style>
-
 {% extends "base.html" %}
+{% block title %}Browse Boats - FishBoat Rentals{% endblock %}
+
 {% block body %}
-    {% set prev_page = page - 1 %}  <!-- variables in jinja --->
-    <div class="column">
-        <h3>Page {{ page }}</h3>
+    <h1>Available Fishing Boats</h1>
 
-        <div class="flex-box">
-            {% for boat in boats %}
-                <div class="boat">
-                    <ul>
-                        <li>Boat id: {{ boat['id'] }}</li>
-                        <ul>
-                            <li>Name: {{ boat['name'] }}</li>
-                            <li>Type: {{ boat['type'] }}</li>
-                            <li>Owner ID: {{ boat['owner_id'] }}</li>
-                            <li>Price: {{ boat['rental_price'] }}</li>
-                        </ul>
-                    </ul>
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <form method="get" class="filters-form">
+            <div class="filters-grid">
+                <div class="form-group">
+                    <label for="sort_by">Sort By:</label>
+                    <select name="sort_by" id="sort_by">
+                        <option value="id" {% if sort_by == 'id' %}selected{% endif %}>Boat ID (Newest)</option>
+                        <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Boat Name (A-Z)</option>
+                        <option value="rental_price" {% if sort_by == 'rental_price' %}selected{% endif %}>Price (Low-High)</option>
+                    </select>
                 </div>
-            {% endfor %}
 
-            {% if boats | length < 1 %}
-                <h1>No data available</h1>
-            {% endif %}
-        </div>
+                <div class="form-group">
+                    <label for="boat_type">Boat Type:</label>
+                    <select name="boat_type" id="boat_type">
+                        <option value="">All Types</option>
+                        {% for type in boat_types %}
+                            <option value="{{ type['type'] }}" {% if boat_type == type['type'] %}selected{% endif %}>
+                                {{ type['type'] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <div class="pagination_bar">
-            <a href= "{{ "/boats/"+ (page - 1) | string }}" class="pagination_button"> < </a>
-            <a class="pagination_button" style="background-color: black"> {{page}} </a>
-            <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button" > {{ page + 1 }} </a>
-            <a href="{{ "/boats/"+ (page + 2) | string }}" class="pagination_button"> {{ page + 2 }} </a>
-            <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> > </a>
+                <div class="form-group">
+                    <label for="min_price">Min Price ($):</label>
+                    <input type="number" name="min_price" id="min_price" min="0" value="{{ min_price }}" placeholder="0">
+                </div>
 
-        </div>
+                <div class="form-group">
+                    <label for="max_price">Max Price ($):</label>
+                    <input type="number" name="max_price" id="max_price" min="0" value="{{ max_price }}" placeholder="10000">
+                </div>
+
+                <div class="filters-actions">
+                    <button type="submit" class="btn" style="background: var(--primary-color);">Filter</button>
+                    <a href="/boats" class="btn btn-reset">Reset</a>
+                </div>
+            </div>
+        </form>
     </div>
 
+    <!-- Results Info -->
+    <div style="text-align: center; margin-bottom: 20px; color: var(--text-light);">
+        <p>Showing page {{ page }} | Total boats available: {{ total_boats }}</p>
+    </div>
+
+    <!-- Boats Cards -->
+    {% if boats | length > 0 %}
+        <div class="cards-container">
+            {% for boat in boats %}
+                <div class="boat-card">
+                    <div class="boat-card-image">BOAT</div>
+                    <div class="boat-card-content">
+                        <a href="/boat/{{ boat['id'] }}" class="boat-card-title">{{ boat['name'] }}</a>
+                        <ul class="boat-info">
+                            <li><strong>Type:</strong> {{ boat['type'] }}</li>
+                            <li><strong>Boat ID:</strong> #{{ boat['id'] }}</li>
+                            <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
+                        </ul>
+                        <div class="price-tag">${{ "%.2f"|format(boat['rental_price']) }} / day</div>
+                        <div class="boat-card-actions">
+                            <a href="/boat/{{ boat['id'] }}" class="btn btn-view">View Details</a>
+                            <a href="/update/{{ boat['id'] }}" class="btn btn-edit">Edit</a>
+                            <form method="post" action="/delete/{{ boat['id'] }}" style="flex: 1;">
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Delete this boat?');" style="width: 100%;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <h2>No boats found</h2>
+            <p style="font-size: 1.1em; color: var(--text-light); margin: 20px 0;">
+                Try adjusting your filters or <a href="/boats" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">view all boats</a>
+            </p>
+        </div>
+    {% endif %}
+
+    <!-- Pagination -->
+    <div class="pagination_bar">
+        {% if page > 1 %}
+            <a href="/boats/1" class="pagination_button">First</a>
+            <a href="/boats/{{ page - 1 }}" class="pagination_button">← Previous</a>
+        {% endif %}
+        
+        {% for pg in range(page, page + 3) %}
+            {% if pg == page %}
+                <span class="pagination_button" style="background-color: #000;">{{ pg }}</span>
+            {% else %}
+                <a href="/boats/{{ pg }}" class="pagination_button">{{ pg }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if boats | length >= per_page %}
+            <a href="/boats/{{ page + 1 }}" class="pagination_button">Next →</a>
+        {% endif %}
+    </div>
 
 {% endblock %}

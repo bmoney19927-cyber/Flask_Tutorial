@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Error - FishBoat Rentals{% endblock %}
+
+{% block body %}
+    <div class="error-container">
+        <h1>Error</h1>
+        <p>{{ message }}</p>
+        <a href="/boats" class="btn" style="background: var(--primary-color); padding: 12px 30px;">Back to Boats</a>
+    </div>
+{% endblock %}

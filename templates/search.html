@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Search Boats - FishBoat Rentals{% endblock %}
+
+{% block body %}
+    <h1>Search Boats</h1>
+
+    <div class="search-section">
+        <form method="post" class="search-form">
+            <div class="form-group">
+                <label for="search_type">Search By:</label>
+                <select name="search_type" id="search_type">
+                    <option value="name" {% if search_type == 'name' %}selected{% endif %}>Boat Name</option>
+                    <option value="type" {% if search_type == 'type' %}selected{% endif %}>Boat Type</option>
+                    <option value="id" {% if search_type == 'id' %}selected{% endif %}>Boat ID</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="search_query">Enter Search Term:</label>
+                <input type="text" name="search_query" id="search_query" placeholder="e.g., 'Speedboat', 'Fishing Cruiser'" required value="{{ search_query }}">
+            </div>
+
+            <button type="submit" class="btn" style="background: var(--primary-color); width: 100%;">Search</button>
+        </form>
+    </div>
+
+    <!-- Search Results -->
+    {% if search_query %}
+        <div style="text-align: center; margin-bottom: 30px; color: var(--text-light);">
+            {% if results %}
+                <p style="font-size: 1.1em;">Found {{ results | length }} boat(s) matching "{{ search_query }}"</p>
+            {% else %}
+                <p style="font-size: 1.1em; color: #f44336;">No boats found matching "{{ search_query }}"</p>
+            {% endif %}
+        </div>
+
+        {% if results %}
+            <div class="cards-container">
+                {% for boat in results %}
+                    <div class="boat-card">
+                        <div class="boat-card-image">BOAT</div>
+                        <div class="boat-card-content">
+                            <a href="/boat/{{ boat['id'] }}" class="boat-card-title">{{ boat['name'] }}</a>
+                            <ul class="boat-info">
+                                <li><strong>Type:</strong> {{ boat['type'] }}</li>
+                                <li><strong>Boat ID:</strong> #{{ boat['id'] }}</li>
+                                <li><strong>Owner ID:</strong> {{ boat['owner_id'] }}</li>
+                            </ul>
+                            <div class="price-tag">${{ "%.2f"|format(boat['rental_price']) }} / day</div>
+                            <div class="boat-card-actions">
+                                <a href="/boat/{{ boat['id'] }}" class="btn btn-view">View Details</a>
+                                <a href="/update/{{ boat['id'] }}" class="btn btn-edit">Edit</a>
+                                <form method="post" action="/delete/{{ boat['id'] }}" style="flex: 1;">
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Delete this boat?');" style="width: 100%;">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

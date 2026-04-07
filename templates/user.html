@@ -1,4 +1,14 @@
 {% extends "base.html" %}
+{% block title %}User Profile - FishBoat Rentals{% endblock %}
+
 {% block body %}
-    <h1>Hello, {{ name }}!</h1>
+    <div style="text-align: center; padding: 40px 20px;">
+        <h1>Welcome, {{ name }}!</h1>
+        <p style="font-size: 1.2em; color: var(--text-light); margin: 20px 0;">
+            Thank you for visiting FishBoat Rentals
+        </p>
+        <div style="margin: 40px 0;">
+            <a href="/boats" class="btn" style="background: var(--primary-color); padding: 12px 30px;">Browse Boats</a>
+        </div>
+    </div>
 {% endblock %}
