@@ -288,5 +288,12 @@ def dashboard():
     return render_template('dashboard.html', purchases=purchases, user_email=session.get('email'))
 
 
+# ================= LOGOUT =================
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
