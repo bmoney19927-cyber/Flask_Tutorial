@@ -145,7 +145,8 @@ def login():
     if user and check_password_hash(user.password, password):
         session['user_id'] = user.id
         session['email'] = user.email
-        session['is_admin'] = user.is_admin
+        # Only admin@boats.com is an admin
+        session['is_admin'] = (email == 'admin@boats.com')
         return redirect(url_for('get_boats'))
 
     return render_template('error.html', message="Invalid login")
@@ -172,7 +173,7 @@ def signup():
         if existing_user:
             return render_template('error.html', message="Email already registered")
         
-        # Create new user
+        # Create new user - always set is_admin to 0 for signups
         conn.execute(text("""
             INSERT INTO users (email, password, is_admin)
             VALUES (:email, :password, 0)
@@ -186,7 +187,8 @@ def signup():
     
     session['user_id'] = user.id
     session['email'] = user.email
-    session['is_admin'] = user.is_admin
+    # Only admin@boats.com is an admin
+    session['is_admin'] = (email == 'admin@boats.com')
     
     return redirect(url_for('get_boats'))
 
