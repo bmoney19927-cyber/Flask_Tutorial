@@ -204,6 +204,10 @@ def signup():
 # ================= CHECKOUT =================
 @app.route('/checkout/<int:id>', methods=['GET', 'POST'])
 def checkout(id):
+    # User must be logged in
+    if not session.get('user_id'):
+        return render_template('error.html', message="You must be logged in to purchase a boat.")
+    
     if request.method == 'GET':
         # Get boat details
         with engine.begin() as conn:
@@ -238,19 +242,50 @@ def checkout(id):
                     {"id": id}
                 ).fetchone()
         
-        # In a real app, you'd process the payment here with Stripe/PayPal
-        # For now, we just approve it
+        if boat:
+            # Save purchase to database
+            with engine.begin() as conn:
+                try:
+                    conn.execute(text("""
+                        INSERT INTO purchases (user_id, boat_id, boat_name, rental_price, purchase_date)
+                        VALUES (:user_id, :boat_id, :boat_name, :rental_price, NOW())
+                    """), {
+                        "user_id": session.get('user_id'),
+                        "boat_id": id,
+                        "boat_name": boat.name,
+                        "rental_price": boat.rental_price
+                    })
+                except:
+                    # If purchases table doesn't exist, just continue
+                    pass
         
         boat_data = dict(boat._mapping) if boat else {}
         
         return render_template('confirmation.html', boat=boat_data)
 
 
-# ================= LOGOUT =================
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
+# ================= USER DASHBOARD =================
+@app.route('/dashboard')
+def dashboard():
+    # User must be logged in
+    if not session.get('user_id'):
+        return render_template('error.html', message="You must be logged in to view your dashboard.")
+    
+    purchases = []
+    
+    with engine.begin() as conn:
+        try:
+            result = conn.execute(text("""
+                SELECT * FROM purchases 
+                WHERE user_id = :user_id 
+                ORDER BY purchase_date DESC
+            """), {"user_id": session.get('user_id')}).fetchall()
+            purchases = [dict(row._mapping) for row in result]
+        except:
+            # Table might not exist yet
+            purchases = []
+    
+    return render_template('dashboard.html', purchases=purchases, user_email=session.get('email'))
 
 
 if __name__ == '__main__':

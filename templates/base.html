@@ -21,6 +21,7 @@
         <div>
             {% if session.get('user_id') %}
                 <span>{{ session['email'] }}</span>
+                <a href="/dashboard">My Dashboard</a>
                 {% if session.get('is_admin') %}
                     <a href="/admin">Admin Dashboard</a>
                 {% endif %}
