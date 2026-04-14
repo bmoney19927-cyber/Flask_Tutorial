@@ -201,6 +201,51 @@ def signup():
     return redirect(url_for('get_boats'))
 
 
+# ================= CHECKOUT =================
+@app.route('/checkout/<int:id>', methods=['GET', 'POST'])
+def checkout(id):
+    if request.method == 'GET':
+        # Get boat details
+        with engine.begin() as conn:
+            try:
+                boat = conn.execute(
+                    text("SELECT * FROM boatdb WHERE id = :id"),
+                    {"id": id}
+                ).fetchone()
+            except:
+                boat = conn.execute(
+                    text("SELECT * FROM boats WHERE id = :id"),
+                    {"id": id}
+                ).fetchone()
+        
+        if not boat:
+            return render_template('error.html', message="Boat not found")
+        
+        return render_template('checkout.html', boat=dict(boat._mapping))
+    
+    # POST - Process payment
+    if request.method == 'POST':
+        # Get boat details for confirmation
+        with engine.begin() as conn:
+            try:
+                boat = conn.execute(
+                    text("SELECT * FROM boatdb WHERE id = :id"),
+                    {"id": id}
+                ).fetchone()
+            except:
+                boat = conn.execute(
+                    text("SELECT * FROM boats WHERE id = :id"),
+                    {"id": id}
+                ).fetchone()
+        
+        # In a real app, you'd process the payment here with Stripe/PayPal
+        # For now, we just approve it
+        
+        boat_data = dict(boat._mapping) if boat else {}
+        
+        return render_template('confirmation.html', boat=boat_data)
+
+
 # ================= LOGOUT =================
 @app.route('/logout')
 def logout():

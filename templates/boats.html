@@ -30,7 +30,7 @@
                 {% else %}
                     <!-- User view - only view and buy -->
                     <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
-                    <button style="padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Buy Now</button>
+                    <a href="/checkout/{{ boat['id'] }}" style="padding: 8px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">Buy Now</a>
                 {% endif %}
             </div>
         </div>

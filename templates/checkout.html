@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Checkout - {{ boat['name'] }} - Under da sea rentals{% endblock %}
+
+{% block body %}
+    <div style="max-width: 500px; margin: 40px auto; padding: 0 20px;">
+        <a href="/boats" style="color: #007bff; text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 20px;">← Back to Boats</a>
+        
+        <h1 style="text-align: center; margin-bottom: 30px;">Complete Your Rental</h1>
+        
+        <!-- Order Summary -->
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #dee2e6;">
+            <h3 style="margin-top: 0;">Order Summary</h3>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <span><strong>Boat:</strong></span>
+                <span>{{ boat['name'] }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <span><strong>Type:</strong></span>
+                <span>{{ boat['type'] }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; padding-top: 15px; border-top: 1px solid #dee2e6;">
+                <span>Daily Rate:</span>
+                <span style="color: #28a745;">${{ "%.2f"|format(boat['rental_price']) }}</span>
+            </div>
+        </div>
+        
+        <!-- Payment Form -->
+        <form method="post" style="background: white; padding: 30px; border-radius: 8px; border: 1px solid #dee2e6;">
+            <h3>Payment Information</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="cardholder" style="display: block; margin-bottom: 8px; font-weight: bold;">Cardholder Name</label>
+                <input type="text" id="cardholder" name="cardholder" placeholder="John Doe" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="cardnumber" style="display: block; margin-bottom: 8px; font-weight: bold;">Card Number</label>
+                <input type="text" id="cardnumber" name="cardnumber" placeholder="4532 1234 5678 9010" maxlength="19" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <label for="expiry" style="display: block; margin-bottom: 8px; font-weight: bold;">Expiry Date</label>
+                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label for="cvv" style="display: block; margin-bottom: 8px; font-weight: bold;">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="email" style="display: block; margin-bottom: 8px; font-weight: bold;">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label style="display: flex; align-items: center; font-size: 14px;">
+                    <input type="checkbox" name="agree" required style="margin-right: 10px; width: 18px; height: 18px;">
+                    <span>I agree to the rental terms and conditions</span>
+                </label>
+            </div>
+            
+            <button type="submit" style="width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; font-weight: bold;">Complete Purchase - ${{ "%.2f"|format(boat['rental_price']) }}</button>
+        </form>
+        
+        <p style="text-align: center; color: #666; margin-top: 20px; font-size: 14px;">
+            Your payment information is secure and encrypted.
+        </p>
+    </div>
+{% endblock %}

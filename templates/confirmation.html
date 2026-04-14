@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Rental Approved - {{ boat['name'] }} - Under da sea rentals{% endblock %}
+
+{% block body %}
+    <div style="max-width: 600px; margin: 40px auto; padding: 0 20px; text-align: center;">
+        <!-- Success Icon -->
+        <div style="font-size: 80px; margin-bottom: 20px;">
+            ✅
+        </div>
+        
+        <!-- Success Message -->
+        <h1 style="color: #28a745; font-size: 36px; margin-bottom: 10px;">Approved for Pick Up!</h1>
+        <p style="font-size: 18px; color: #666; margin-bottom: 40px;">
+            Your rental has been successfully confirmed. Your boat is ready to go!
+        </p>
+        
+        <!-- Confirmation Details -->
+        <div style="background: #f8f9fa; padding: 30px; border-radius: 8px; border: 2px solid #28a745; margin-bottom: 40px; text-align: left;">
+            <h3 style="color: #28a745; margin-top: 0;">Rental Confirmation</h3>
+            
+            <div style="margin-bottom: 15px;">
+                <strong>Boat:</strong> {{ boat['name'] }}
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <strong>Type:</strong> {{ boat['type'] }}
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <strong>Daily Rate:</strong> <span style="color: #28a745;">${{ "%.2f"|format(boat['rental_price']) }}/day</span>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <strong>Confirmation #:</strong> #{{ boat['id'] }}-{{ session.get('user_id') }}
+            </div>
+            
+            <div style="margin-bottom: 0;">
+                <strong>Status:</strong> <span style="background: #28a745; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold;">CONFIRMED</span>
+            </div>
+        </div>
+        
+        <!-- Next Steps -->
+        <div style="background: #e7f5ff; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff; margin-bottom: 40px; text-align: left;">
+            <h3 style="margin-top: 0; color: #004085;">What's Next?</h3>
+            <ol style="color: #004085;">
+                <li>You'll receive a confirmation email shortly</li>
+                <li>Arrive at our office 15 minutes early to complete paperwork</li>
+                <li>Bring a valid ID and driver's license</li>
+                <li>Inspect the boat before departure</li>
+                <li>Enjoy your rental!</li>
+            </ol>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <a href="/boats" style="padding: 12px 30px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                Browse More Boats
+            </a>
+            <a href="/logout" style="padding: 12px 30px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+                Logout
+            </a>
+        </div>
+        
+        <!-- Contact Info -->
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 14px;">
+            <p>
+                <strong>Questions?</strong> Contact us at support@underdasearentals.com or call 1-800-BOATS-NOW
+            </p>
+        </div>
+    </div>
+{% endblock %}
