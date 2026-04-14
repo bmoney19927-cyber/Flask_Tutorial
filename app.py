@@ -21,14 +21,13 @@ def get_boats():
     error = None
     
     with engine.begin() as conn:
-        # IMPORTANT: your table is likely "boats" OR "boatdb"
-        # we try boats first (most likely correct)
+        # Try boatdb first (where most data is), then boats
         try:
-            result = conn.execute(text("SELECT * FROM boats")).fetchall()
+            result = conn.execute(text("SELECT * FROM boatdb")).fetchall()
             boats = [dict(row._mapping) for row in result]
         except Exception as e:
             try:
-                result = conn.execute(text("SELECT * FROM boatdb")).fetchall()
+                result = conn.execute(text("SELECT * FROM boats")).fetchall()
                 boats = [dict(row._mapping) for row in result]
             except Exception as e2:
                 error = f"Error loading boats: {str(e2)}"
@@ -44,12 +43,12 @@ def search():
     with engine.begin() as conn:
         try:
             result = conn.execute(text("""
-                SELECT * FROM boats
+                SELECT * FROM boatdb
                 WHERE name LIKE :q OR type LIKE :q
             """), {"q": f"%{q}%"}).fetchall()
         except:
             result = conn.execute(text("""
-                SELECT * FROM boatdb
+                SELECT * FROM boats
                 WHERE name LIKE :q OR type LIKE :q
             """), {"q": f"%{q}%"}).fetchall()
 
@@ -64,12 +63,12 @@ def boat_detail(id):
     with engine.begin() as conn:
         try:
             boat = conn.execute(
-                text("SELECT * FROM boats WHERE id = :id"),
+                text("SELECT * FROM boatdb WHERE id = :id"),
                 {"id": id}
             ).fetchone()
         except:
             boat = conn.execute(
-                text("SELECT * FROM boatdb WHERE id = :id"),
+                text("SELECT * FROM boats WHERE id = :id"),
                 {"id": id}
             ).fetchone()
 
