@@ -21,16 +21,18 @@
 
             <div style="display: flex; gap: 10px; margin-top: 15px;">
                 <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
-                <a href="/update/{{ boat['id'] }}" style="padding: 8px 15px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px;">Edit</a>
-                <form method="post" action="/delete/{{ boat['id'] }}" style="display: inline;">
-                    <button type="submit" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
-                </form>
+                {% if session.get('is_admin') %}
+                    <a href="/update/{{ boat['id'] }}" style="padding: 8px 15px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px;">Edit</a>
+                    <form method="post" action="/delete/{{ boat['id'] }}" style="display: inline;">
+                        <button type="submit" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
 {% else %}
     <div style="background: #e7f3ff; padding: 20px; margin: 20px 0; border: 1px solid #b3d9ff; border-radius: 5px;">
-        <p style="color: #004085; margin: 0;"><strong>No boats found.</strong> <a href="/create" style="color: #0056b3; text-decoration: underline;">Add your first boat!</a></p>
+        <p style="color: #004085; margin: 0;"><strong>No boats found.</strong> {% if session.get('is_admin') %}<a href="/create" style="color: #0056b3; text-decoration: underline;">Add your first boat!</a>{% endif %}</p>
     </div>
 {% endif %}
 

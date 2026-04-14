@@ -81,6 +81,10 @@ def boat_detail(id):
 # ================= CREATE =================
 @app.route('/create', methods=['GET', 'POST'])
 def create():
+    # Only admin can access this route
+    if not session.get('is_admin'):
+        return render_template('error.html', message="Access denied. Only admins can create boats.")
+    
     if request.method == 'POST':
         with engine.begin() as conn:
             try:
@@ -102,6 +106,10 @@ def create():
 # ================= DELETE =================
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
+    # Only admin can delete boats
+    if not session.get('is_admin'):
+        return render_template('error.html', message="Access denied. Only admins can delete boats.")
+    
     with engine.begin() as conn:
         try:
             conn.execute(text("DELETE FROM boats WHERE id = :id"), {"id": id})
