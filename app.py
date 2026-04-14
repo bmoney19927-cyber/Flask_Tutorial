@@ -17,17 +17,23 @@ def index():
 # ================= BOATS (FIXED - MAIN ISSUE) =================
 @app.route('/boats')
 def get_boats():
+    boats = []
+    error = None
+    
     with engine.begin() as conn:
         # IMPORTANT: your table is likely "boats" OR "boatdb"
         # we try boats first (most likely correct)
         try:
             result = conn.execute(text("SELECT * FROM boats")).fetchall()
-        except:
-            result = conn.execute(text("SELECT * FROM boatdb")).fetchall()
-
-    boats = [dict(row._mapping) for row in result]
-
-    return render_template('boats.html', boats=boats)
+            boats = [dict(row._mapping) for row in result]
+        except Exception as e:
+            try:
+                result = conn.execute(text("SELECT * FROM boatdb")).fetchall()
+                boats = [dict(row._mapping) for row in result]
+            except Exception as e2:
+                error = f"Error loading boats: {str(e2)}"
+    
+    return render_template('boats.html', boats=boats, error=error)
 
 
 # ================= SEARCH (FIXED) =================

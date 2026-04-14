@@ -3,19 +3,35 @@
 
 <h1>Boats</h1>
 
-{% for boat in boats %}
-    <div>
-        <h3>{{ boat['name'] }}</h3>
-        <p>{{ boat['type'] }}</p>
-        <p>${{ boat['rental_price'] }}</p>
-
-        <a href="/boat/{{ boat['id'] }}">View</a>
-        <a href="/update/{{ boat['id'] }}">Edit</a>
-
-        <form method="post" action="/delete/{{ boat['id'] }}">
-            <button type="submit">Delete</button>
-        </form>
+{% if error %}
+    <div style="background: #fee; padding: 15px; margin: 20px 0; border: 1px solid #f00; border-radius: 5px;">
+        <p style="color: #c00; margin: 0;"><strong>Error:</strong> {{ error }}</p>
     </div>
-{% endfor %}
+{% endif %}
+
+{% if boats %}
+    {% for boat in boats %}
+        <div style="background: white; padding: 20px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin-top: 0;">{{ boat.get('name', 'N/A') }}</h3>
+            <p><strong>Type:</strong> {{ boat.get('type', 'N/A') }}</p>
+            <p><strong>Price:</strong> ${{ boat.get('rental_price', 'N/A') }}/day</p>
+            {% if boat.get('owner_id') %}
+                <p><strong>Owner ID:</strong> {{ boat['owner_id'] }}</p>
+            {% endif %}
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
+                <a href="/update/{{ boat['id'] }}" style="padding: 8px 15px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px;">Edit</a>
+                <form method="post" action="/delete/{{ boat['id'] }}" style="display: inline;">
+                    <button type="submit" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div style="background: #e7f3ff; padding: 20px; margin: 20px 0; border: 1px solid #b3d9ff; border-radius: 5px;">
+        <p style="color: #004085; margin: 0;"><strong>No boats found.</strong> <a href="/create" style="color: #0056b3; text-decoration: underline;">Add your first boat!</a></p>
+    </div>
+{% endif %}
 
 {% endblock %}
