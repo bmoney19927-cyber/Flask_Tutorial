@@ -9,20 +9,24 @@
 
 <header>
     <div class="topBar">
-        <a href="/">HOME</a>
-        <a href="/boats">BOATS</a>
-        <a href="/search">SEARCH</a>
-        <a href="/create">CREATE</a>
+
+        <a href="/">Home</a>
+        <a href="/boats">Boats</a>
+        <a href="/search">Search</a>
+        <a href="/create">Create</a>
 
         <div>
             {% if session.get('user_id') %}
-                <span>Welcome {{ session['email'] }}</span>
+                <span>{{ session['email'] }}</span>
                 <a href="/logout">Logout</a>
             {% else %}
                 <a href="/login">Login</a>
                 <a href="/signup">Signup</a>
             {% endif %}
         </div>
+{% if session.get('is_admin') %}
+    <a href="/admin">Admin Dashboard</a>
+{% endif %}
     </div>
 </header>
 

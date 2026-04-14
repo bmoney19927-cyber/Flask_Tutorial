@@ -5,14 +5,14 @@
 
 {% for boat in boats %}
     <div>
-        <h3>{{ boat.name }}</h3>
-        <p>{{ boat.type }}</p>
-        <p>${{ boat.rental_price }}</p>
+        <h3>{{ boat['name'] }}</h3>
+        <p>{{ boat['type'] }}</p>
+        <p>${{ boat['rental_price'] }}</p>
 
-        <a href="/boat/{{ boat.id }}">View</a>
-        <a href="/update/{{ boat.id }}">Edit</a>
+        <a href="/boat/{{ boat['id'] }}">View</a>
+        <a href="/update/{{ boat['id'] }}">Edit</a>
 
-        <form method="post" action="/delete/{{ boat.id }}">
+        <form method="post" action="/delete/{{ boat['id'] }}">
             <button type="submit">Delete</button>
         </form>
     </div>
