@@ -65,9 +65,12 @@ def logout():
 @app.route('/boats')
 def get_boats():
     with engine.begin() as conn:
-        boats = conn.execute(text("SELECT * FROM boats")).fetchall()
+        result = conn.execute(text("SELECT * FROM boats")).mappings().all()
+
+    boats = [dict(row) for row in result]
 
     return render_template('boats.html', boats=boats)
+
 
 
 # ================= SEARCH =================
