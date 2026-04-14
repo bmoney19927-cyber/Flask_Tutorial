@@ -20,12 +20,17 @@
             {% endif %}
 
             <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
                 {% if session.get('is_admin') %}
+                    <!-- Admin view - with edit and delete -->
+                    <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
                     <a href="/update/{{ boat['id'] }}" style="padding: 8px 15px; background: #ffc107; color: black; text-decoration: none; border-radius: 4px;">Edit</a>
                     <form method="post" action="/delete/{{ boat['id'] }}" style="display: inline;">
                         <button type="submit" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
                     </form>
+                {% else %}
+                    <!-- User view - only view and buy -->
+                    <a href="/boat/{{ boat['id'] }}" style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
+                    <button style="padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Buy Now</button>
                 {% endif %}
             </div>
         </div>
